@@ -1,0 +1,41 @@
+name: QA Pipeline
+
+on:
+  workflow_dispatch:
+
+jobs:
+  qa-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build application
+        run: |
+          echo "Building application..."
+          echo "Build completed successfully"
+
+      - name: Run tests
+        run: |
+          echo "Running QA tests..."
+          echo "Test 1: PASS"
+          echo "Test 2: PASS"
+          echo "Test 3: FAIL"
+          echo "Test execution finished"
+          exit 1
+
+      - name: Generate test report
+        if: always()
+        run: |
+          echo "Test 1: PASS" > test-report.txt
+          echo "Test 2: PASS" >> test-report.txt
+          echo "Test 3: FAIL" >> test-report.txt
+          echo "Test report generated"
+
+      - name: Upload test report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qa-test-report
+          path: test-report.txt
